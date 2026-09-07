@@ -1,4 +1,4 @@
-package com.reorderkit;
+package com.reorderkit.dto;
 
 public class StatusResponse {
     String status;
