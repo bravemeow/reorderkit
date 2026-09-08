@@ -14,7 +14,7 @@ public class ReorderRequest {
 
     @NotNull
     @Positive
-    private Double averageDailySales30d;
+    private Double averageDailySales;
 
     @NotNull
     @Min(0)
@@ -35,7 +35,7 @@ public class ReorderRequest {
     public Integer getOnOrderQuantity() {
         return onOrderQuantity;
     }
-    public Double getAverageDailySales30d() { return averageDailySales30d; }
+    public Double getAverageDailySales() { return averageDailySales; }
     public Integer getLeadTimeDays() { return leadTimeDays; }
     public Integer getBufferDays() { return bufferDays; }
     public Integer getOrderCoverageDays() { return orderCoverageDays; }
@@ -44,7 +44,7 @@ public class ReorderRequest {
     public void setOnOrderQuantity(Integer onOrderQuantity) {
         this.onOrderQuantity = onOrderQuantity;
     }
-    public void setAverageDailySales30d(Double value) { this.averageDailySales30d = value; }
+    public void setAverageDailySales30d(Double value) { this.averageDailySales = value; }
     public void setLeadTimeDays(Integer value) { this.leadTimeDays = value; }
     public void setBufferDays(Integer value) { this.bufferDays = value; }
     public void setOrderCoverageDays(Integer value) { this.orderCoverageDays = value; }

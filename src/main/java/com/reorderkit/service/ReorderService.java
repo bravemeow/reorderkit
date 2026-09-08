@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReorderService {
     // inventoryPosition = currentInventory + onOrderQuantity
-    // reorderPoint = averageDailySales30d * (leadTimeDays + bufferDays)
+    // reorderPoint = averageDailySales * (leadTimeDays + bufferDays)
     // shouldReorder = inventoryPosition <= reorderPoint
     // targetInventory = reorderPoint + (averageDailySales30d * orderCoverageDays)
     // recommendedQuantity = max(0, targetInventory - inventoryPosition)
@@ -19,7 +19,7 @@ public class ReorderService {
         int inventory = request.getInventory();
         int onOrderQuantity = request.getOnOrderQuantity() == null ? 0 : request.getOnOrderQuantity();
         int inventoryPosition = inventory + onOrderQuantity;
-        double avgDailySales = request.getAverageDailySales30d();
+        double avgDailySales = request.getAverageDailySales();
         int leadTimeDays = request.getLeadTimeDays();
         int bufferDays = request.getBufferDays();
         int orderCoverageDays = request.getOrderCoverageDays();
@@ -32,7 +32,7 @@ public class ReorderService {
             recommendedQuantity = Math.max(0, targetInventory - inventoryPosition);
         }
 
-        return new ReorderResponse(reorderPoint, targetInventory, shouldReorder, recommendedQuantity);
+        return new ReorderResponse((int) reorderPoint, targetInventory, shouldReorder, recommendedQuantity);
     }
 
     private void validateRequest(ReorderRequest request) {
@@ -49,9 +49,9 @@ public class ReorderService {
             );
         }
 
-        if (request.getAverageDailySales30d() <= 0) {
+        if (request.getAverageDailySales() <= 0) {
             throw new IllegalArgumentException(
-                    "averageDailySales30d must be greater than 0"
+                    "averageDailySales must be greater than 0"
             );
         }
 

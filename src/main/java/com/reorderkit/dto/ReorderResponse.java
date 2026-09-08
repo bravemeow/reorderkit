@@ -1,18 +1,18 @@
 package com.reorderkit.dto;
 
 public class ReorderResponse {
-    private double reorderPoint;
+    private int reorderPoint;
     private int targetInventory;
     private boolean shouldReorder;
     private int recommendedQuantity;
-    public ReorderResponse(double reorderPoint, int targetInventory, boolean shouldReorder, int recommendedQuantity) {
+    public ReorderResponse(int reorderPoint, int targetInventory, boolean shouldReorder, int recommendedQuantity) {
         this.reorderPoint = reorderPoint;
         this.targetInventory = targetInventory;
         this.shouldReorder = shouldReorder;
         this.recommendedQuantity = recommendedQuantity;
     }
 
-    public double getReorderPoint() {
+    public int getReorderPoint() {
         return reorderPoint;
     }
     public int getTargetInventory() {
@@ -25,8 +25,8 @@ public class ReorderResponse {
         return recommendedQuantity;
     }
 
-    public void setReorderPoint(int estimateStockOutDays) {
-        this.reorderPoint = estimateStockOutDays;
+    public void setReorderPoint(int reorderPoint) {
+        this.reorderPoint = reorderPoint;
     }
     public void setTargetInventory(int reorderThreshold) {
         this.targetInventory = reorderThreshold;

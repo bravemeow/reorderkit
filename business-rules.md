@@ -2,44 +2,44 @@
 
 ## Inputs
 
-* Current inventory
+* inventory
 * onOrderQuantity
-* Average daily sales
-* Lead time
-* Buffer days
+* averageDailySales: 
+* leadTimeDays
+* bufferDays
+* orderCoverageDays
 
-## Reorder Timing
+## Rules
 
-Estimate how many days the current inventory will last based on average daily sales.
+### - reorderPoint
+How many days the current inventory position (including on order quantity) will last based on average daily sales.
 
-Recommend reorder when inventory coverage reaches:
 
-`lead time + buffer days`
+`averageDailySales * (leadTimeDays + bufferDays)`
 
 Example:
 
-* Inventory: 100
 * Daily sales: 10
 * Lead time: 10 days
 * Buffer: 5 days
 
-Inventory lasts about 10 days. Since lead time + buffer is 15 days, reorder now.
+*reorderPoint* is at 150. When current inventory position drops below this point, *shouldReorder* is triggered.
 
-## Reorder Quantity
+### - shouldReorder
+Reorder timing informs merchant to reorder.
 
-Recommend enough units to cover:
+`shouldReorder = inventoryPosition <= reorderPoint`
 
-`daily sales * (lead time + buffer days) - inventory`
 
-Example:
+### - targetInventory
+How much quantity the inventory will consistently hold based on *orderCoverageDays*.
 
-* Inventory: 100
-* Daily sales: 10
-* Lead time: 30 days
-* Buffer: 5 days
+`reorderPoint + (averageDailySales * orderCoverageDays)`
 
-Recommended reorder quantity: about 250 units.
+### - recommendedQuantity
+How much quantity merchant should reorder regarding a snapshot.
+
+`targetInventory - inventoryPosition`
 
 ## Goal
-
 Avoid stockouts without holding unnecessary inventory.

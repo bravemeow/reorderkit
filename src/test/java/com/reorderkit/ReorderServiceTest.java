@@ -48,10 +48,10 @@ public class ReorderServiceTest {
         ReorderRequest request = makeRequest(0, 0, 10.0, 20, 5, 20);
         ReorderResponse response = rs.check(request);
 
-        assertEquals(0, response.getReorderPoint());
-        assertEquals(25, response.getTargetInventory());
+        assertEquals(250, response.getReorderPoint());
+        assertEquals(450, response.getTargetInventory());
         assertTrue(response.isShouldReorder());
-        assertEquals(250, response.getRecommendedQuantity());
+        assertEquals(450, response.getRecommendedQuantity());
     }
 
     @Test
@@ -59,10 +59,10 @@ public class ReorderServiceTest {
         ReorderRequest request = makeRequest(0, null, 10.0, 20, 5, 20);
         ReorderResponse response = rs.check(request);
 
-        assertEquals(0, response.getReorderPoint());
-        assertEquals(25, response.getTargetInventory());
+        assertEquals(250, response.getReorderPoint());
+        assertEquals(450, response.getTargetInventory());
         assertTrue(response.isShouldReorder());
-        assertEquals(250, response.getRecommendedQuantity());
+        assertEquals(450, response.getRecommendedQuantity());
     }
 
     @Test
@@ -70,21 +70,21 @@ public class ReorderServiceTest {
         ReorderRequest request = makeRequest(200, 100, 10.0, 20, 5, 20);
         ReorderResponse response = rs.check(request);
 
-        assertEquals(30, response.getReorderPoint());
-        assertEquals(25, response.getTargetInventory());
+        assertEquals(250, response.getReorderPoint());
+        assertEquals(450, response.getTargetInventory());
         assertFalse(response.isShouldReorder());
         assertEquals(0, response.getRecommendedQuantity());
     }
 
     @Test
-    public void equalStockOutAndThresholdReorderTest() {
+    public void equalInventoryAndReorderPointReorderTest() {
         ReorderRequest request = makeRequest(250, 0, 10.0, 20, 5, 20);
         ReorderResponse response = rs.check(request);
 
-        assertEquals(25, response.getReorderPoint());
-        assertEquals(25, response.getTargetInventory());
+        assertEquals(250, response.getReorderPoint());
+        assertEquals(450, response.getTargetInventory());
         assertTrue(response.isShouldReorder());
-        assertEquals(0, response.getRecommendedQuantity());
+        assertEquals(200, response.getRecommendedQuantity());
     }
 
     @Test
@@ -114,6 +114,12 @@ public class ReorderServiceTest {
     @Test
     public void negativeBufferDaysReorderTest() {
         ReorderRequest request = makeRequest(0, 100, 10.0, 20, -5, 20);
+        assertThrows(IllegalArgumentException.class, () -> rs.check(request));
+    }
+
+    @Test
+    public void negativeOrderCoverageDaysReorderTest() {
+        ReorderRequest request = makeRequest(0, 100, 10.0, 20, 5, -20);
         assertThrows(IllegalArgumentException.class, () -> rs.check(request));
     }
 }
