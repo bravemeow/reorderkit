@@ -1,23 +1,22 @@
 package com.reorderkit.dto;
 
 public class ReorderResponse {
-    private int estimateStockOutDays;
-    private int reorderThreshold;
+    private double reorderPoint;
+    private int targetInventory;
     private boolean shouldReorder;
     private int recommendedQuantity;
-
-    public ReorderResponse(int estimateStockOutDays, int reorderThreshold, boolean shouldReorder, int recommendedQuantity) {
-        this.estimateStockOutDays = estimateStockOutDays;
-        this.reorderThreshold = reorderThreshold;
+    public ReorderResponse(double reorderPoint, int targetInventory, boolean shouldReorder, int recommendedQuantity) {
+        this.reorderPoint = reorderPoint;
+        this.targetInventory = targetInventory;
         this.shouldReorder = shouldReorder;
         this.recommendedQuantity = recommendedQuantity;
     }
 
-    public int getEstimateStockOutDays() {
-        return estimateStockOutDays;
+    public double getReorderPoint() {
+        return reorderPoint;
     }
-    public int getReorderThreshold() {
-        return reorderThreshold;
+    public int getTargetInventory() {
+        return targetInventory;
     }
     public boolean isShouldReorder() {
         return shouldReorder;
@@ -26,11 +25,11 @@ public class ReorderResponse {
         return recommendedQuantity;
     }
 
-    public void setEstimateStockOutDays(int estimateStockOutDays) {
-        this.estimateStockOutDays = estimateStockOutDays;
+    public void setReorderPoint(int estimateStockOutDays) {
+        this.reorderPoint = estimateStockOutDays;
     }
-    public void setReorderThreshold(int reorderThreshold) {
-        this.reorderThreshold = reorderThreshold;
+    public void setTargetInventory(int reorderThreshold) {
+        this.targetInventory = reorderThreshold;
     }
     public void setShouldReorder(boolean shouldReorder) {
         this.shouldReorder = shouldReorder;

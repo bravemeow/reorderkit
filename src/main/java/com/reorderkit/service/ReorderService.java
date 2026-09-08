@@ -6,31 +6,71 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReorderService {
-
-    // estimateStockOutDays = inventory / avgDailySales
-    // reorderThreshold = leadTimeDays + bufferDays
-    // shouldReorder if estimateStockOutDate <= reorderThreshold
-    // recommendedQuantity = avgDailySales * (reorderCycleDays + bufferDays) - inventory
+    // inventoryPosition = currentInventory + onOrderQuantity
+    // reorderPoint = averageDailySales30d * (leadTimeDays + bufferDays)
+    // shouldReorder = inventoryPosition <= reorderPoint
+    // targetInventory = reorderPoint + (averageDailySales30d * orderCoverageDays)
+    // recommendedQuantity = max(0, targetInventory - inventoryPosition)
 
 
     public ReorderResponse check(ReorderRequest request) {
+        validateRequest(request);
+
         int inventory = request.getInventory();
+        int onOrderQuantity = request.getOnOrderQuantity() == null ? 0 : request.getOnOrderQuantity();
+        int inventoryPosition = inventory + onOrderQuantity;
         double avgDailySales = request.getAverageDailySales30d();
         int leadTimeDays = request.getLeadTimeDays();
         int bufferDays = request.getBufferDays();
-        int reorderCycleDays = request.getReorderCycleDays();
+        int orderCoverageDays = request.getOrderCoverageDays();
 
-        boolean shouldReorder = false;
-        if (avgDailySales <= 0) {   // validation
-            throw new IllegalArgumentException("averageDailySales must be greater than 0");
+        double reorderPoint = avgDailySales * (leadTimeDays + bufferDays);
+        int targetInventory = (int)(reorderPoint + (avgDailySales * orderCoverageDays));
+        boolean shouldReorder = inventoryPosition <= reorderPoint;
+        int recommendedQuantity = 0;
+        if(shouldReorder){
+            recommendedQuantity = Math.max(0, targetInventory - inventoryPosition);
         }
-        int estimateStockOutDays = (int)(inventory / avgDailySales);
-        int reorderThreshold = leadTimeDays + bufferDays;
-        if(estimateStockOutDays <= reorderThreshold) {
-            shouldReorder = true;
-        }
-        int recommendedQuantity = (int) Math.ceil(avgDailySales * (reorderCycleDays + bufferDays) - inventory);
 
-        return new ReorderResponse(estimateStockOutDays, reorderThreshold, shouldReorder, recommendedQuantity);
+        return new ReorderResponse(reorderPoint, targetInventory, shouldReorder, recommendedQuantity);
+    }
+
+    private void validateRequest(ReorderRequest request) {
+        if (request.getInventory() < 0) {
+            throw new IllegalArgumentException(
+                    "inventory must not be negative"
+            );
+        }
+
+        if (request.getOnOrderQuantity() != null
+                && request.getOnOrderQuantity() < 0) {
+            throw new IllegalArgumentException(
+                    "onOrderQuantity must not be negative"
+            );
+        }
+
+        if (request.getAverageDailySales30d() <= 0) {
+            throw new IllegalArgumentException(
+                    "averageDailySales30d must be greater than 0"
+            );
+        }
+
+        if (request.getLeadTimeDays() < 0) {
+            throw new IllegalArgumentException(
+                    "leadTimeDays must not be negative"
+            );
+        }
+
+        if (request.getBufferDays() < 0) {
+            throw new IllegalArgumentException(
+                    "bufferDays must not be negative"
+            );
+        }
+
+        if (request.getOrderCoverageDays() < 0) {
+            throw new IllegalArgumentException(
+                    "orderCoverageDays must not be negative"
+            );
+        }
     }
 }

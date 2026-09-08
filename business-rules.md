@@ -3,10 +3,9 @@
 ## Inputs
 
 * Current inventory
+* onOrderQuantity
 * Average daily sales
-* 30/60/90 day sales trend
 * Lead time
-* Reorder cycle
 * Buffer days
 
 ## Reorder Timing
@@ -19,27 +18,27 @@ Recommend reorder when inventory coverage reaches:
 
 Example:
 
-* Inventory: 120
+* Inventory: 100
 * Daily sales: 10
 * Lead time: 10 days
 * Buffer: 5 days
 
-Inventory lasts about 12 days. Since lead time + buffer is 15 days, reorder now.
+Inventory lasts about 10 days. Since lead time + buffer is 15 days, reorder now.
 
 ## Reorder Quantity
 
 Recommend enough units to cover:
 
-`daily sales * (reorder cycle + buffer days) - current inventory`
+`daily sales * (lead time + buffer days) - inventory`
 
 Example:
 
-* Inventory: 120
+* Inventory: 100
 * Daily sales: 10
-* Reorder cycle: 30 days
+* Lead time: 30 days
 * Buffer: 5 days
 
-Recommended reorder quantity: about 230 units.
+Recommended reorder quantity: about 250 units.
 
 ## Goal
 
