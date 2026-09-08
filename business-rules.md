@@ -30,15 +30,16 @@ Inventory lasts about 12 days. Since lead time + buffer is 15 days, reorder now.
 
 Recommend enough units to cover:
 
-`reorder cycle + buffer days`
+`daily sales * (reorder cycle + buffer days) - current inventory`
 
 Example:
 
+* Inventory: 120
 * Daily sales: 10
 * Reorder cycle: 30 days
 * Buffer: 5 days
 
-Recommended reorder quantity: about 350 units.
+Recommended reorder quantity: about 230 units.
 
 ## Goal
 

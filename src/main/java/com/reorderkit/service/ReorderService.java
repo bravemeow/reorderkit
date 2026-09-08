@@ -10,7 +10,7 @@ public class ReorderService {
     // estimateStockOutDays = inventory / avgDailySales
     // reorderThreshold = leadTimeDays + bufferDays
     // shouldReorder if estimateStockOutDate <= reorderThreshold
-    // recommendedQuantity = avgDailySales * (reorderCycleDays + bufferDays)
+    // recommendedQuantity = avgDailySales * (reorderCycleDays + bufferDays) - inventory
 
 
     public ReorderResponse check(ReorderRequest request) {
@@ -21,7 +21,7 @@ public class ReorderService {
         int reorderCycleDays = request.getReorderCycleDays();
 
         boolean shouldReorder = false;
-        if (avgDailySales <= 0) {
+        if (avgDailySales <= 0) {   // validation
             throw new IllegalArgumentException("averageDailySales must be greater than 0");
         }
         int estimateStockOutDays = (int)(inventory / avgDailySales);
@@ -29,7 +29,7 @@ public class ReorderService {
         if(estimateStockOutDays <= reorderThreshold) {
             shouldReorder = true;
         }
-        int recommendedQuantity = (int) Math.ceil(avgDailySales * (reorderCycleDays + bufferDays));
+        int recommendedQuantity = (int) Math.ceil(avgDailySales * (reorderCycleDays + bufferDays) - inventory);
 
         return new ReorderResponse(estimateStockOutDays, reorderThreshold, shouldReorder, recommendedQuantity);
     }
