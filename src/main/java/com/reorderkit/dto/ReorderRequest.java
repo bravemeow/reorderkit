@@ -25,7 +25,7 @@ public class ReorderRequest {
     private Integer bufferDays;
 
     @NotNull
-    @Min(0)
+    @Positive
     private Integer orderCoverageDays;
 
     public ReorderRequest() {
@@ -44,7 +44,7 @@ public class ReorderRequest {
     public void setOnOrderQuantity(Integer onOrderQuantity) {
         this.onOrderQuantity = onOrderQuantity;
     }
-    public void setAverageDailySales30d(Double value) { this.averageDailySales = value; }
+    public void setAverageDailySales(Double value) { this.averageDailySales = value; }
     public void setLeadTimeDays(Integer value) { this.leadTimeDays = value; }
     public void setBufferDays(Integer value) { this.bufferDays = value; }
     public void setOrderCoverageDays(Integer value) { this.orderCoverageDays = value; }

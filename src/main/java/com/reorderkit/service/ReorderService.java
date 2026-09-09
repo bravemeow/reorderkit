@@ -67,9 +67,14 @@ public class ReorderService {
             );
         }
 
-        if (request.getOrderCoverageDays() < 0) {
+        if (request.getOrderCoverageDays() <= 0) {
             throw new IllegalArgumentException(
-                    "orderCoverageDays must not be negative"
+                    "orderCoverageDays must must be positive"
+            );
+        }
+        if (request.getOrderCoverageDays() == null) {
+            throw new IllegalArgumentException(
+                    "orderCoverageDays is required"
             );
         }
     }

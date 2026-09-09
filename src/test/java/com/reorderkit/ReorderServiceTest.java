@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ReorderServiceTest {
     ReorderService rs = new ReorderService();
 
-    private ReorderRequest makeRequest(Integer inventory, Integer onOrderQuantity, Double averageDailySales30d, Integer leadTimeDays, Integer bufferDays, Integer orderCoverageDays) {
+    private ReorderRequest makeRequest(Integer inventory, Integer onOrderQuantity, Double setAverageDailySales, Integer leadTimeDays, Integer bufferDays, Integer orderCoverageDays) {
         ReorderRequest request = new ReorderRequest();
         request.setInventory(inventory);
         request.setOnOrderQuantity(onOrderQuantity);
-        request.setAverageDailySales30d(averageDailySales30d);
+        request.setAverageDailySales(setAverageDailySales);
         request.setLeadTimeDays(leadTimeDays);
         request.setBufferDays(bufferDays);
         request.setOrderCoverageDays(orderCoverageDays);
