@@ -13,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -38,8 +37,8 @@ public class ReorderHistory {
     @Column(name = "on_order_quantity", nullable = false)
     private int onOrderQuantity;
 
-    @Column(name = "average_daily_sales_30d", nullable = false, precision = 12, scale = 4)
-    private BigDecimal averageDailySales30d;
+    @Column(name = "average_daily_sales_30d", nullable = false)
+    private double averageDailySales30d;
 
     @Column(name = "lead_time_days", nullable = false)
     private int leadTimeDays;
@@ -76,7 +75,7 @@ public class ReorderHistory {
             ProductVariant productVariant,
             int inventoryQuantity,
             int onOrderQuantity,
-            BigDecimal averageDailySales30d,
+            double averageDailySales30d,
             int leadTimeDays,
             int bufferDays,
             int orderCoverageDays,
@@ -121,7 +120,7 @@ public class ReorderHistory {
         return onOrderQuantity;
     }
 
-    public BigDecimal getAverageDailySales30d() {
+    public double getAverageDailySales30d() {
         return averageDailySales30d;
     }
 

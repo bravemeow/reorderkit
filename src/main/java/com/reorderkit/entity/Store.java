@@ -73,6 +73,32 @@ public class Store {
         updatedAt = Instant.now();
     }
 
+    public void configureReorderSettings(
+            int leadTimeDays,
+            int bufferDays,
+            int orderCoverageDays
+    ) {
+        if (leadTimeDays < 0) {
+            throw new IllegalArgumentException("leadTimeDays must not be negative");
+        }
+        if (bufferDays < 0) {
+            throw new IllegalArgumentException("bufferDays must not be negative");
+        }
+        if (orderCoverageDays <= 0) {
+            throw new IllegalArgumentException("orderCoverageDays must be positive");
+        }
+
+        this.defaultLeadTimeDays = leadTimeDays;
+        this.defaultBufferDays = bufferDays;
+        this.defaultOrderCoverageDays = orderCoverageDays;
+    }
+
+    public boolean isConfigured() {
+        return defaultLeadTimeDays != null
+                && defaultBufferDays != null
+                && defaultOrderCoverageDays != null;
+    }
+
     public Long getId() {
         return id;
     }

@@ -29,7 +29,7 @@ erDiagram
         string sku "nullable"
         int inventory_quantity
         int on_order_quantity
-        decimal average_daily_sales_30d
+        double average_daily_sales_30d
         int lead_time_days_override "nullable"
         int buffer_days_override "nullable"
         int order_coverage_days_override "nullable"
@@ -43,7 +43,7 @@ erDiagram
         bigint product_variant_id FK
         int inventory_quantity
         int on_order_quantity
-        decimal average_daily_sales_30d
+        double average_daily_sales_30d
         int lead_time_days
         int buffer_days
         int order_coverage_days

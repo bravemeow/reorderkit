@@ -12,7 +12,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -47,8 +46,8 @@ public class ProductVariant {
     @Column(name = "on_order_quantity", nullable = false)
     private int onOrderQuantity;
 
-    @Column(name = "average_daily_sales_30d", nullable = false, precision = 12, scale = 4)
-    private BigDecimal averageDailySales30d;
+    @Column(name = "average_daily_sales_30d", nullable = false)
+    private double averageDailySales30d;
 
     @Column(name = "lead_time_days_override")
     private Integer leadTimeDaysOverride;
@@ -79,7 +78,7 @@ public class ProductVariant {
             String variantTitle,
             String sku,
             int inventoryQuantity,
-            BigDecimal averageDailySales30d
+            double averageDailySales30d
     ) {
         this.store = store;
         this.shopifyProductId = shopifyProductId;
@@ -90,6 +89,21 @@ public class ProductVariant {
         this.inventoryQuantity = inventoryQuantity;
         this.onOrderQuantity = 0;
         this.averageDailySales30d = averageDailySales30d;
+    }
+
+    public void configureReorderOverrides(Integer leadTimeDays, Integer bufferDays, Integer orderCoverageDays) {
+        if (leadTimeDays != null && leadTimeDays < 0) {
+            throw new IllegalArgumentException("leadTimeDays must not be negative");
+        }
+        if (bufferDays != null && bufferDays < 0) {
+            throw new IllegalArgumentException("bufferDays must not be negative");
+        }
+        if (orderCoverageDays != null && orderCoverageDays <= 0) {
+            throw new IllegalArgumentException("orderCoverageDays must be positive");
+        }
+        this.leadTimeDaysOverride = leadTimeDays;
+        this.bufferDaysOverride = bufferDays;
+        this.orderCoverageDaysOverride = orderCoverageDays;
     }
 
     @PrePersist
@@ -140,7 +154,7 @@ public class ProductVariant {
         return onOrderQuantity;
     }
 
-    public BigDecimal getAverageDailySales30d() {
+    public double getAverageDailySales30d() {
         return averageDailySales30d;
     }
 
